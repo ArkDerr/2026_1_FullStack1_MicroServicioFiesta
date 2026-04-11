@@ -22,20 +22,15 @@ public class FiestaService {
     public FiestaResponse guardarFiesta(FiestaCreateRequest request) {
         Fiesta fiesta = new Fiesta();
 
-        fiesta.setIdFiesta(request.getIdFiesta());
+        //fiesta.setIdFiesta(request.getIdFiesta());
         fiesta.setNombre(request.getNombre());
         fiesta.setTipoDeFiesta(request.getTipoDeFiesta());
         fiesta.setFechaRealizacion(request.getFechaRealizacion());
         fiesta.setUbicacion(request.getUbicacion());
         fiesta.setCapacidad(request.getCapacidad());
 
-        Optional<Fiesta> buscarFiesta = fiestaRepository.obtenerUnaFiesta(fiesta.getIdFiesta());
 
-        if (buscarFiesta.isPresent()) {
-            return null;
-        }
-
-        Fiesta fiestaGuardada = fiestaRepository.guardarFiesta(fiesta);
+        Fiesta fiestaGuardada = fiestaRepository.save(fiesta);
         return new FiestaResponse(
                 fiesta.getIdFiesta(),
                 fiestaGuardada.getNombre(),
@@ -47,7 +42,7 @@ public class FiestaService {
 
     // Obtener todas las fiestas
     public List<FiestaResponse> obtenerTodasFiestas() {
-        List<Fiesta> fiestas = fiestaRepository.obtenerTodasFiestas();
+        List<Fiesta> fiestas = fiestaRepository.findAll();
         List<FiestaResponse> respuesta = new ArrayList<>();
 
         for (Fiesta fiesta : fiestas) {
@@ -66,7 +61,7 @@ public class FiestaService {
 
     // Obtener una fiesta por id
     public FiestaResponse obtenerUnaFiesta(Integer idFiesta) {
-        Fiesta fiesta = fiestaRepository.obtenerUnaFiesta(idFiesta).orElse(null);
+        Fiesta fiesta = fiestaRepository.findById(idFiesta).orElse(null);
 
         if (fiesta == null) {
             return null;
@@ -92,7 +87,7 @@ public class FiestaService {
         fiesta.setUbicacion(request.getUbicacion());
         fiesta.setCapacidad(request.getCapacidad());
 
-        Fiesta fiestaActualizada = fiestaRepository.actualizarFiesta(fiesta);
+        Fiesta fiestaActualizada = fiestaRepository.save(fiesta);
 
         if (fiestaActualizada == null) {
             return null;
@@ -109,6 +104,10 @@ public class FiestaService {
 
     // Eliminar una fiesta
     public boolean eliminarFiesta(Integer idFiesta) {
-        return fiestaRepository.eliminarFiesta(idFiesta);
+        if(fiestaRepository.existsById(idFiesta)){
+             fiestaRepository.deleteById(idFiesta);
+             return true;
+        }
+        return false;
     }
 }
