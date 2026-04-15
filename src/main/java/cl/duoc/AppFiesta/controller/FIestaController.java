@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.duoc.AppFiesta.dto.request.FiestaCreateRequest;
+import cl.duoc.AppFiesta.dto.request.FiestaUpdateRequest;
 import cl.duoc.AppFiesta.dto.response.FiestaResponse;
 import cl.duoc.AppFiesta.service.FiestaService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1/fiesta")
+@RequiredArgsConstructor
 public class FIestaController {
-    @Autowired
-    private FiestaService fiestaService;
+    // @Autowired
+    private final FiestaService fiestaService;
 
     // Endpoint para buscar una fiesta
     @GetMapping("/{id}")
@@ -60,7 +64,7 @@ public class FIestaController {
     @PutMapping("/{id}")
     public ResponseEntity<FiestaResponse> actualizarFiesta(
             @PathVariable Integer id,
-            @Valid @RequestBody FiestaCreateRequest request) {
+            @Valid @RequestBody FiestaUpdateRequest request) {
 
         FiestaResponse fiestaActualizada = fiestaService.actualizarFiesta(id, request);
 
@@ -81,6 +85,26 @@ public class FIestaController {
         }
 
         return ResponseEntity.noContent().build(); // Devuelve un 204 No Content (Operacion exitosa pero sin contenido)
+    }
+
+    // Usando query's personalizadas
+    // ── BÚSQUEDAS ────────────────────────────────────
+    @GetMapping("/buscar")
+    public ResponseEntity<List<FiestaResponse>> buscarPorTitulo(
+            @RequestParam String nombre) {
+        return ResponseEntity.ok(fiestaService.buscarPorTitulo(nombre));
+    }
+
+    @GetMapping("/comuna/{id}")
+    public ResponseEntity<List<FiestaResponse>> buscarPorCategoria(
+            @PathVariable Long id) {
+        return ResponseEntity.ok(fiestaService.buscarPorComuna(id));
+    }
+
+    @GetMapping("/capacidad")
+    public ResponseEntity<List<FiestaResponse>> bajoCapacidad(
+            @RequestParam Integer max) {
+        return ResponseEntity.ok(fiestaService.buscarBajoCapacidad(max));
     }
 
 }

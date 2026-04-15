@@ -30,7 +30,12 @@ public class Fiesta {
     private LocalDate fechaRealizacion;
 
     @Column(nullable = false)
-    private String ubicacion;
+    private String direccion;
+
+    // Relacion con la tabla Comuna de la BD, muchos a uno
+    @ManyToOne
+    @JoinColumn(name = "comuna_id", nullable = false)
+    private Comuna comuna;
 
     @Column(nullable = false)
     private Integer capacidad;

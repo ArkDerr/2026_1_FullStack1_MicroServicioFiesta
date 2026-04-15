@@ -16,5 +16,6 @@ public class FiestaResponse {
     private String tipoDeFiesta;
     private LocalDate fechaRealizacion;
     private String ubicacion;
+    private String comuna;
     private Integer capacidad;
 }

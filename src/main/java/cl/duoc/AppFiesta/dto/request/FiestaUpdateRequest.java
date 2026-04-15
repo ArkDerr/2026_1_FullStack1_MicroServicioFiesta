@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonaUpdateRequest {
+public class FiestaUpdateRequest {
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 3, max = 100, message = "El nombre debe tener entre 3 y 100 caracteres")
@@ -35,7 +35,7 @@ public class PersonaUpdateRequest {
 
     @NotBlank(message = "La ubicación es obligatoria")
     @Size(max = 150, message = "La ubicación no puede superar 150 caracteres")
-    private String ubicacion;
+    private String direccion;
 
     @Positive(message = "La capacidad debe ser mayor a 0")
     @Max(value = 100000, message = "Capacidad demasiado alta")

@@ -28,8 +28,11 @@ public class FiestaCreateRequest {
     private LocalDate fechaRealizacion;
 
     @NotBlank(message = "La ubicación es obligatoria")
-    @Size(max = 150, message = "La ubicación no puede superar 150 caracteres")
-    private String ubicacion;
+    @Size(max = 150, message = "La direccion no puede superar 150 caracteres")
+    private String direccion;
+
+    @Positive(message = "Id debe ser mayor a 0")
+    private Long comuna_id;
 
     @Positive(message = "La capacidad debe ser mayor a 0")
     @Max(value = 100000, message = "Capacidad demasiado alta")
