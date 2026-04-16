@@ -2,12 +2,9 @@ package cl.duoc.AppFiesta.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired; / Se quito al agregar @RequiredArgsConstructor
 import org.springframework.stereotype.Service;
-
 import cl.duoc.AppFiesta.dto.request.FiestaCreateRequest;
 import cl.duoc.AppFiesta.dto.request.FiestaUpdateRequest;
 import cl.duoc.AppFiesta.dto.response.FiestaResponse;
@@ -42,6 +39,7 @@ public class FiestaService {
 
     // Crear una fiesta
     /*
+     * Se comenta al agregar nuevo modelo comuna
      * public FiestaResponse guardarFiesta(FiestaCreateRequest request) {
      * Fiesta fiesta = new Fiesta();
      * 
@@ -67,6 +65,17 @@ public class FiestaService {
     public FiestaResponse guardarFiesta(FiestaCreateRequest request) {
         Comuna comuna = comunaRepository.findById(request.getComuna_id().longValue())
                 .orElseThrow(() -> new RuntimeException("Comuna no encontrada"));
+
+        // .orElseThrow(...) / Si encuentra la comuna → la devuelve y si no lanza
+        // excepción
+        /*
+         * Es "equivalente" a:
+         * if (comuna != null) {
+         * return comuna;
+         * } else {
+         * throw new RuntimeException("Comuna no encontrada");
+         * }
+         */
 
         Fiesta fiesta = new Fiesta();
         fiesta.setNombre(request.getNombre());
@@ -120,6 +129,7 @@ public class FiestaService {
 
     // Actualizar una fiesta
     /*
+     * Se comenta al agregar nuevo modelo comuna
      * public FiestaResponse actualizarFiesta(Integer idFiesta, FiestaCreateRequest
      * request) {
      * Fiesta fiesta = new Fiesta();
