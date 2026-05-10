@@ -1,46 +1,19 @@
 package cl.duoc.AppFiesta.security;
 
-// Importa clases para manejo de entrada/salida
 import java.io.IOException;
-
-// Importa List para crear lista de roles/permisos
 import java.util.List;
-
-// Permite leer valores desde application.properties
 import org.springframework.beans.factory.annotation.Value;
-
-// Representa autenticación de usuario en Spring Security
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
-// Representa roles/permisos simples como ROLE_ADMIN
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-// Permite guardar la autenticación del usuario actual
 import org.springframework.security.core.context.SecurityContextHolder;
-
-// Marca esta clase como componente administrado por Spring
 import org.springframework.stereotype.Component;
-
-// Clase base para filtros que se ejecutan una sola vez por request
 import org.springframework.web.filter.OncePerRequestFilter;
-
-// Librería JWT para validar tokens
 import com.auth0.jwt.JWT;
-
-// Algoritmo utilizado para verificar firma JWT
 import com.auth0.jwt.algorithms.Algorithm;
-
-// Representa el JWT ya decodificado
 import com.auth0.jwt.interfaces.DecodedJWT;
-
-// Clases Servlet para filtros HTTP
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-
-// Representa request HTTP
 import jakarta.servlet.http.HttpServletRequest;
-
-// Representa response HTTP
 import jakarta.servlet.http.HttpServletResponse;
 
 // Indica que Spring debe crear automáticamente esta clase
