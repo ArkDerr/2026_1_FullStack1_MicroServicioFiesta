@@ -2,15 +2,18 @@ package cl.duoc.AppFiesta.security;
 
 import java.io.IOException;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -80,8 +83,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Obtiene el username desde el payload JWT
             String username = jwt.getSubject();
 
-            // Obtiene el role desde el claim role
-            String role = jwt.getClaim("role").asString();
+            // Obtiene la lista de roles desde el claim roles
+            List<String> roles = jwt.getClaim("roles").asList(String.class);
+
+            // Si el token no trae roles, se deja una lista vacía
+            if (roles == null) {
+                roles = List.of();
+            }
+
+            // Convierte los roles del token en permisos de Spring Security
+            List<SimpleGrantedAuthority> authorities = roles.stream()
+
+                    // Convierte cada texto ROLE_USER o ROLE_ADMIN en SimpleGrantedAuthority
+                    .map(SimpleGrantedAuthority::new)
+
+                    // Convierte el stream en una lista
+                    .toList();
 
             // Crea objeto Authentication para Spring Security
             UsernamePasswordAuthenticationToken authentication =
@@ -96,10 +113,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             null,
 
                             // Lista de roles/permisos
-                            List.of(
-
-                                    // Agrega ROLE_ADMIN o ROLE_USER
-                                    new SimpleGrantedAuthority("ROLE_" + role)));
+                            authorities);
 
             // Guarda la autenticación del usuario en Spring Security
             SecurityContextHolder.getContext()

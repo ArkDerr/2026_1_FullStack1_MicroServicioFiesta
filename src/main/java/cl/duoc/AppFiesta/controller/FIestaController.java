@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-@RequestMapping("/api/v1/fiesta")
+@RequestMapping("/api/v1/fiestas")
 @RequiredArgsConstructor
 public class FIestaController {
     // @Autowired
