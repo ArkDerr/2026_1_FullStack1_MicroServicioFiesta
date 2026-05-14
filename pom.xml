@@ -116,6 +116,14 @@
 			<version>4.4.0</version>
 		</dependency>
 
+<!-- Dependencias de LOG-->
+
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>7.4</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
