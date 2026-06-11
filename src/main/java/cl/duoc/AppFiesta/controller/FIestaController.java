@@ -2,11 +2,14 @@ package cl.duoc.AppFiesta.controller;
 
 import java.util.List;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.duoc.AppFiesta.assembler.FiestaModelAssembler;
 import cl.duoc.AppFiesta.dto.request.FiestaCreateRequest;
 import cl.duoc.AppFiesta.dto.request.FiestaUpdateRequest;
 import cl.duoc.AppFiesta.dto.response.FiestaResponse;
@@ -29,40 +32,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class FIestaController {
     // @Autowired
     private final FiestaService fiestaService;
+    private final FiestaModelAssembler assembler;
 
     // Endpoint para buscar una fiesta
     @GetMapping("/{id}")
-    public ResponseEntity<FiestaResponse> obtenerUnaFiesta(@PathVariable Integer id) {
+    public ResponseEntity<EntityModel<FiestaResponse>> obtenerUnaFiesta(@PathVariable Integer id) {
         FiestaResponse fiesta = fiestaService.obtenerUnaFiesta(id);
         if (fiesta == null) {
             return ResponseEntity.notFound().build(); // devuelve el error 404 Not Found, sin cuerpo o mensaje
         }
-        return ResponseEntity.ok(fiesta); // devuelve un 200 ok y el json guardado
+        return ResponseEntity.ok(assembler.toModel(fiesta)); // devuelve un 200 ok y el json guardado
     }
 
     // Endpoint para listar todas las fiestas
     @GetMapping
-    public ResponseEntity<List<FiestaResponse>> listarTodasFiestas() {
-        List<FiestaResponse> fiestas = fiestaService.obtenerTodasFiestas();
-        return ResponseEntity.ok(fiestas); // Devuelve un 200 ok y la lista (fiestas)
+    public ResponseEntity<CollectionModel<EntityModel<FiestaResponse>>> listarTodasFiestas() {
+        // List<FiestaResponse> fiestas = fiestaService.obtenerTodasFiestas();
+        return ResponseEntity.ok(assembler.toCollectionModel(
+                fiestaService.obtenerTodasFiestas())); // Devuelve un 200 ok y la lista (fiestas)
     }
 
     // Endpoint para guardar o registar una fiesta
     @PostMapping
-    public ResponseEntity<FiestaResponse> guardarFiesta(@Valid @RequestBody FiestaCreateRequest request) {
+    public ResponseEntity<EntityModel<FiestaResponse>> guardarFiesta(@Valid @RequestBody FiestaCreateRequest request) {
         FiestaResponse fiestaGuardada = fiestaService.guardarFiesta(request);
         if (fiestaGuardada == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Devuelve un 409 Conflict por ya existir un
                                                                        // registro
         } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(fiestaGuardada); // Devuelve un 201 Created, con el
-                                                                                   // objeto (Fiesta) guardado
+            return ResponseEntity.status(HttpStatus.CREATED).body(assembler.toModel(fiestaGuardada)); // Devuelve un 201
+                                                                                                      // Created, con el
+                                                                                                      // objeto (Fiesta)
+                                                                                                      // guardado
         }
     }
 
     // Endpoint para actualizar una fiesta por ID de la fiesta
     @PutMapping("/{id}")
-    public ResponseEntity<FiestaResponse> actualizarFiesta(
+    public ResponseEntity<EntityModel<FiestaResponse>> actualizarFiesta(
             @PathVariable Integer id,
             @Valid @RequestBody FiestaUpdateRequest request) {
 
@@ -72,7 +79,8 @@ public class FIestaController {
             return ResponseEntity.notFound().build(); // Devuelve el error 404 Not Found, sin cuerpo o mensaje
         }
 
-        return ResponseEntity.ok(fiestaActualizada); // Devuelve un 200 ok y el objeto (fiesta) guardado
+        return ResponseEntity.ok(assembler.toModel(fiestaActualizada)); // Devuelve un 200 ok y el objeto (fiesta)
+                                                                        // guardado
     }
 
     // Endpoint para eliminar una fiesta por ID
@@ -90,21 +98,21 @@ public class FIestaController {
     // Usando query's personalizadas
     // ── BÚSQUEDAS ────────────────────────────────────
     @GetMapping("/buscar")
-    public ResponseEntity<List<FiestaResponse>> buscarPorTitulo(
+    public ResponseEntity<CollectionModel<EntityModel<FiestaResponse>>> buscarPorTitulo(
             @RequestParam String nombre) {
-        return ResponseEntity.ok(fiestaService.buscarPorTitulo(nombre));
+        return ResponseEntity.ok(assembler.toCollectionModel(fiestaService.buscarPorTitulo(nombre)));
     }
 
     @GetMapping("/comuna/{id}")
-    public ResponseEntity<List<FiestaResponse>> buscarPorCategoria(
+    public ResponseEntity<CollectionModel<EntityModel<FiestaResponse>>> buscarPorCategoria(
             @PathVariable Long id) {
-        return ResponseEntity.ok(fiestaService.buscarPorComuna(id));
+        return ResponseEntity.ok(assembler.toCollectionModel(fiestaService.buscarPorComuna(id)));
     }
 
     @GetMapping("/capacidad")
-    public ResponseEntity<List<FiestaResponse>> bajoCapacidad(
+    public ResponseEntity<CollectionModel<EntityModel<FiestaResponse>>> bajoCapacidad(
             @RequestParam Integer max) {
-        return ResponseEntity.ok(fiestaService.buscarBajoCapacidad(max));
+        return ResponseEntity.ok(assembler.toCollectionModel(fiestaService.buscarBajoCapacidad(max)));
     }
 
 }

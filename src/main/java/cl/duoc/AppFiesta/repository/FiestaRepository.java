@@ -25,7 +25,7 @@ public interface FiestaRepository extends JpaRepository<Fiesta, Integer> {
     List<Fiesta> findByCapacidadLessThan(Integer capacidad);
 
     // → SELECT * FROM Fiesta WHERE precio BETWEEN ? AND ?
-    List<Fiesta> findByCapacidadBetween(Double min, Double max);
+    List<Fiesta> findByCapacidadBetween(Integer min, Integer max);
 
     // Ejemplos de otras variantes:
     // findByNombre(String nombre) // exacto

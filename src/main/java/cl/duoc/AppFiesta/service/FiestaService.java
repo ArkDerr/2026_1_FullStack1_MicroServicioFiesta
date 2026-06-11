@@ -18,7 +18,6 @@ import cl.duoc.AppFiesta.repository.FiestaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @Service
 @RequiredArgsConstructor
@@ -102,7 +101,7 @@ public class FiestaService {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        String usuario = auth.getName();
+        String usuario = auth != null ? auth.getName() : "usuario-no-autenticado";
         // Log de inicio del proceso
         log.info("Iniciando búsqueda de todas las fiestas");
         log.info("Usuario={} realizó búsqueda",
