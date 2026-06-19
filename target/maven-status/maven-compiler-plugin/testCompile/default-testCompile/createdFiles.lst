@@ -1,0 +1,5 @@
+cl\duoc\AppFiesta\controller\FIestaControllerTest.class
+cl\duoc\AppFiesta\security\JwtAuthenticationFilterTest.class
+cl\duoc\AppFiesta\AppFiestaApplicationTests.class
+cl\duoc\AppFiesta\repository\FiestaRepositoryTest.class
+cl\duoc\AppFiesta\service\FiestaServiceTest.class

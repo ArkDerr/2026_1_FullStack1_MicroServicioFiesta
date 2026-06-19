@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: cl.duoc.AppFiesta.repository.FiestaRepositoryTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.670 s -- in cl.duoc.AppFiesta.repository.FiestaRepositoryTest

@@ -1,6 +1,7 @@
 package cl.duoc.AppFiesta.dataloader;
 
 import java.time.ZoneId;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +17,7 @@ import cl.duoc.AppFiesta.repository.FiestaRepository;
 import lombok.RequiredArgsConstructor;
 import net.datafaker.Faker;
 
-@Profile("dev") // Solo corre si el perfil activo es DEV
+@Profile("dev") // Solo corre si el perfil activo es DEV 
 @Component // Esta clase forma parte de la aplicación, créala automáticamente como un Bean.
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner { // CommandLineRunner Cuando termina de levantar la aplicación
@@ -26,7 +27,7 @@ public class DataLoader implements CommandLineRunner { // CommandLineRunner Cuan
 
     @Override
     public void run(String... args) throws Exception {
-        Faker faker = new Faker();
+        Faker faker = new Faker(new Locale("es"));
         // Random random = new Random();
 
         // Generar Fiestas
